@@ -32,6 +32,10 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
+		// Add a character to the output string IF
+		//		It's the first letter in the string
+		//		It's preceded by a space or a hyphen
+		// Convert the string to uppercase
 		return null;
 	}
 
@@ -86,16 +90,19 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
+			// return side1 == side2 and side2 == side3
 			return false;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
+			//return side1 == side2 or side2 == side3
 			return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
+			// return side1 != side2 and side2 != side3 and side3 != side1
 			return false;
 		}
 
@@ -118,6 +125,11 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
+		// Start a score. Set it at zero
+		// For each character in the input string:
+		//		Determine the letter score with a switch statement
+		//		Add that score to the total
+		// Return the total
 		return 0;
 	}
 
@@ -154,6 +166,8 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
+		// Throw exceptions for any inputs that have non-numeric characters or do not have 10 characters
+		// Remove parentheses, dots, dashes, and spaces from the input
 		return null;
 	}
 
