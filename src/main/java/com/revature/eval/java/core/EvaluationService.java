@@ -13,7 +13,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	// Appears finished as is. Should run the test cases without issue
+	// FINISHED
 	public String reverse(String string) {
 		char[] reversed = new char[string.length()];
 		for (int i = reversed.length - 1, j=0; i >= 0; i--, j++) {
@@ -30,13 +30,25 @@ public class EvaluationService {
 	 * @param phrase
 	 * @return
 	 */
+	// FINISHED
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
 		// Add a character to the output string IF
 		//		It's the first letter in the string
 		//		It's preceded by a space or a hyphen
 		// Convert the string to uppercase
-		return null;
+		StringBuilder workspace = new StringBuilder("");
+		for(int i = 0, j = i - 1; i < phrase.length(); i++, j++) {
+			if (i == 0) {
+				workspace.append(phrase.charAt(i));
+			}
+			else {
+				if (phrase.charAt(j) == ' ' || phrase.charAt(j) == '-') {
+					workspace.append(phrase.charAt(i));
+				}
+			}
+		}
+		return workspace.toString().toUpperCase();
 	}
 
 	/**
@@ -48,6 +60,7 @@ public class EvaluationService {
 	 * different lengths.
 	 *
 	 */
+	// FINISHED
 	static class Triangle {
 		private double sideOne;
 		private double sideTwo;
@@ -91,19 +104,19 @@ public class EvaluationService {
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
 			// return side1 == side2 and side2 == side3
-			return false;
+			return sideOne == sideTwo && sideTwo == sideThree;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
 			//return side1 == side2 or side2 == side3
-			return false;
+			return sideOne == sideTwo || sideTwo == sideThree || sideThree == sideOne;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
 			// return side1 != side2 and side2 != side3 and side3 != side1
-			return false;
+			return sideOne != sideTwo && sideTwo != sideThree && sideThree != sideOne;
 		}
 
 	}
@@ -123,6 +136,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	// FINISHED
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
 		// Start a score. Set it at zero
@@ -130,7 +144,38 @@ public class EvaluationService {
 		//		Determine the letter score with a switch statement
 		//		Add that score to the total
 		// Return the total
-		return 0;
+		int score = 0;
+		for (int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) == 'A' || string.charAt(i) == 'a' || string.charAt(i) == 'E' || string.charAt(i) == 'e' || 
+					string.charAt(i) == 'I' || string.charAt(i) == 'i' || string.charAt(i) == 'O' || string.charAt(i) == 'o' || 
+					string.charAt(i) == 'U' || string.charAt(i) == 'u' || string.charAt(i) == 'L' || string.charAt(i) == 'l' || 
+					string.charAt(i) == 'N' || string.charAt(i) == 'n' || string.charAt(i) == 'R' || string.charAt(i) == 'r' || 
+					string.charAt(i) == 'S' || string.charAt(i) == 's' || string.charAt(i) == 'T' || string.charAt(i) == 't') {
+				score++;
+			}
+			else if (string.charAt(i) == 'D' || string.charAt(i) == 'd' || string.charAt(i) == 'G' || string.charAt(i) == 'g') {
+				score += 2;
+			}
+			else if (string.charAt(i) == 'B' || string.charAt(i) == 'b' || string.charAt(i) == 'C' || string.charAt(i) == 'c' || 
+					string.charAt(i) == 'M' || string.charAt(i) == 'm' || string.charAt(i) == 'P' || string.charAt(i) == 'p') {
+				score += 3;
+			}
+			else if (string.charAt(i) == 'F' || string.charAt(i) == 'f' || string.charAt(i) == 'H' || string.charAt(i) == 'h' || 
+					string.charAt(i) == 'V' || string.charAt(i) == 'v' || string.charAt(i) == 'W' || string.charAt(i) == 'w' || 
+					string.charAt(i) == 'Y' || string.charAt(i) == 'y') {
+				score += 4;
+			}
+			else if (string.charAt(i) == 'K' || string.charAt(i) == 'k') {
+				score += 5;
+			}
+			else if (string.charAt(i) == 'J' || string.charAt(i) == 'j' || string.charAt(i) == 'X' || string.charAt(i) == 'x') {
+				score += 8;
+			}
+			else if (string.charAt(i) == 'Q' || string.charAt(i) == 'q' || string.charAt(i) == 'Z' || string.charAt(i) == 'z') {
+				score += 10;
+			}
+		}
+		return score;
 	}
 
 	/**
@@ -168,7 +213,35 @@ public class EvaluationService {
 		// TODO Write an implementation for this method declaration
 		// Throw exceptions for any inputs that have non-numeric characters or do not have 10 characters
 		// Remove parentheses, dots, dashes, and spaces from the input
-		return null;
+		StringBuilder workspace = new StringBuilder();
+		for(int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) != ' ' && string.charAt(i) != '-' && string.charAt(i) != '(' && string.charAt(i) != ')') {
+				workspace.append(string.charAt(i));
+			}
+		}
+		if (workspace.length() > 10) {
+			try {
+				throw new IllegalArgumentException();
+			}
+			catch (IllegalArgumentException len) {
+				System.out.println("Number must be less than 10 digits");
+			}
+		}
+		else {
+			for (int i = 1; i < workspace.length(); i++) {
+				//This if statement should filter out any characters with values outside of 0-9
+				if (workspace.charAt(i) < 91 || workspace.charAt(i) > 100) {
+					try {
+						throw new IllegalArgumentException();
+					}
+					catch (IllegalArgumentException notNum) {
+						System.out.println("Input numerical characters only");
+						
+					}
+				}
+			}
+		}
+		return workspace.toString();
 	}
 
 	/**
