@@ -182,6 +182,15 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
+		// Determine how words might be separated (by spaces, commas, or new line characters)
+		// Create an empty Map.
+		// While the end of the string has not yet been reached:
+			// Separate out the next word by space, comma, or newline.
+			// If the next word matches any entry in the map:
+				// Increment the integer of the corresponding key in the Map
+			// Else
+				// Add this word to the Map and set the corresponding value to 1
+		// Return the Map
 		return null;
 	}
 
@@ -225,6 +234,22 @@ public class EvaluationService {
 
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
+			// Set the index = 0
+			// If the list only has one element
+				// If the element - input = 0
+					// Return the index
+				// Else
+					// Return not found
+			// Else
+				// Set the index = length/2
+				// If the element - input = 0
+					// Return the index
+				// Else if the element - input < 0
+					// Save old index, set index /= 2
+					// Run indexOf on an array from 0 to old index
+				// Else
+					// Save old index, set index /= 2
+					// Run indexOf on an array from old index to the end of the array
 			return 0;
 		}
 
@@ -262,6 +287,11 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
+		// Split String into an array of words, separated by spaces
+		// For each String in the array
+			// Select all leading consonants before the first value (including zero characters)
+			// Move any leading consonants to the end of the String, and add "ay"
+		// Return the elements to a new String, separated by spaces
 		return null;
 	}
 
@@ -282,6 +312,17 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
+		// Set number of digits = 1
+		// Set counter1 = input
+		// While counter1/10 !=0
+			// digits += 1
+			// Set counter1 %= 10
+		// Empty array
+		// Set counter2 = digits
+		// While counter2 != 0
+			// Use divide and modulo to get each digit. Raise it to number of digits
+		// Return true if input = sum of the elements in this array.
+			
 		return false;
 	}
 
@@ -297,6 +338,9 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
+		// Divide input cleanly by 2... or 3... or 5... or the next prime
+		// Divide result by 2... or 3... etc...
+		// Method is finished when dividing results in 1
 		return null;
 	}
 
@@ -336,6 +380,13 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
+			// For each alphabetic character in the String:
+				// Add the value of the key to the letter.
+				// If the key goes beyond a letter value:
+					// Get the distance from the letter to the end of the alphabet
+					// Get the difference between this distance and the cipher
+					// Start from "a" and use the difference to reset.
+			// Return the encrypted String
 			return null;
 		}
 
@@ -355,6 +406,9 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
+		// For a number of times equal to the input:
+			// While a number is selected:
+				// If there is any multiple found besides the number and 1, go to the next one.
 		return 0;
 	}
 
@@ -392,6 +446,12 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
+			// Destroy all spaces and punctuation
+			// If letter is less than 13
+				// New value += 2*(13 - value) + 1
+			// Else
+				// New value -= 2*(value - 13) + 1
+			// Format and return the new String
 			return null;
 		}
 
@@ -403,6 +463,7 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
+			// Same as above, but don't bother formatting.
 			return null;
 		}
 	}
@@ -431,6 +492,10 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
+		// Eliminate dashes
+		// If any character is not a number or an X, the ISBN is invalid
+		// Add v1*10 + v2*9 + ... and X on the end will be 10
+		// Modulo result by 11. If it's 0, the ISBN number is valid
 		return false;
 	}
 
@@ -449,6 +514,12 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
+		// If the String is less than 26 characters long, return false.
+		// Create a character array of the alphabet
+		// Create an array of 26 booleans.
+		// For each entry in the alphabet array:
+			// Search the String for that letter. Log the result in the boolean array.
+		// All booleans must be true for the String to be a pangram
 		return false;
 	}
 
@@ -462,6 +533,12 @@ public class EvaluationService {
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
 		// TODO Write an implementation for this method declaration
+		// Divide seconds by 60 for minutes, modulo for seconds
+		// Divide minutes by 60 for hours, modulo for minutes
+		// Divide hours by 24 for days, modulo for hours
+		// Divide days by 365 for years, modulo for days
+		// Number of years will determine how many leap days -- add to total days.
+		// Based on date input, add years, use days to determine months, add hours, minutes, seconds.
 		return null;
 	}
 
@@ -480,6 +557,11 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
+		// Create an array of addends
+		// For each entry in set:
+			// Enter multiples of that number in the master array, stopping before the cutoff.
+			// Do not enter any multiples that already exist in the master array
+		// Sum the master array. Return the result.
 		return 0;
 	}
 
@@ -521,6 +603,13 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
+		// Destroy all spaces
+		// Any non-digit characters remaining invalidate the String
+		// For each character in the String:
+			// If the character's index is odd (zero-based counting):
+				// Double the number. Subtract 9 from any numbers that would be greater than 9.
+		// Sum the resulting array.
+		// Return true if the result % 10 == 0
 		return false;
 	}
 
@@ -553,6 +642,10 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
+		// Start paying attention at the first number in the question.
+		// Parse each number to num1 and num2
+		// Parse the operation command.
+		// Use switch to determine what to do with the two numbers, based on the parsed command.
 		return 0;
 	}
 
