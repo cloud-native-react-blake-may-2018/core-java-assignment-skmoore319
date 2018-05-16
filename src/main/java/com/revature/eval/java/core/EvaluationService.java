@@ -308,7 +308,9 @@ public class EvaluationService {
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
 			// Set the index = 0
+			int index = 0;
 			// If the list only has one element
+			
 				// If the element - input = 0
 					// Return the index
 				// Else
@@ -386,17 +388,34 @@ public class EvaluationService {
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
 		// Set number of digits = 1
+		int numDigits = 1;
 		// Set counter1 = input
+		int counter1 = input;
 		// While counter1/10 !=0
+		while (counter1/10 != 0) {
 			// digits += 1
+			numDigits += 1;
 			// Set counter1 %= 10
+			counter1 %= 10;
+		}
+		
 		// Empty array
+		int[] powers = new int[10];
 		// Set counter2 = digits
+		int counter2 = numDigits;
+		int index = 0;
+		int total = 0;
 		// While counter2 != 0
+		for (int i = counter2-1; i >= 0; i--) {
 			// Use divide and modulo to get each digit. Raise it to number of digits
+			powers[index] = (int) Math.pow(((input % Math.pow(10, i+1))/Math.pow(10, i)), numDigits);
+			total += powers[index];
+			index++;
+		}
+		
 		// Return true if input = sum of the elements in this array.
-			
-		return false;
+		
+		return total == input;
 	}
 
 	/**
@@ -454,13 +473,41 @@ public class EvaluationService {
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
 			// For each alphabetic character in the String:
+			StringBuilder workspace = new StringBuilder(string);
+			int lowerStart = 65;
+			int upperStart = 97;
+			for (int i = 0; i > string.length(); i++) {
+				if(Character.isAlphabetic(Character.getNumericValue(string.charAt(i)))) {
+					// && 
+					if (Character.isLowerCase(string.charAt(i))) {
+						if (Character.getNumericValue(string.charAt(i)) > lowerStart+26) {
+							int distance = Math.abs(Character.getNumericValue(string.charAt(i)) - (lowerStart+26));
+							int difference = Math.abs(distance - key);
+							workspace.setCharAt(i, (char) (lowerStart + difference));
+						}
+						else {
+							workspace.setCharAt(i,  (char) (Character.getNumericValue(string.charAt(i)) + key));
+						}
+					}
+					else {
+						if (Character.getNumericValue(string.charAt(i)) > upperStart+26) {
+							int distance = Math.abs(Character.getNumericValue(string.charAt(i)) - (upperStart+26));
+							int difference = Math.abs(distance - key);
+							workspace.setCharAt(i, (char) (upperStart + difference));
+						}
+						else {
+							workspace.setCharAt(i,  (char) (Character.getNumericValue(string.charAt(i)) + key));
+						}
+					}
+				}
+			}
 				// Add the value of the key to the letter.
 				// If the key goes beyond a letter value:
 					// Get the distance from the letter to the end of the alphabet
 					// Get the difference between this distance and the cipher
 					// Start from "a" and use the difference to reset.
 			// Return the encrypted String
-			return null;
+			return workspace.toString();
 		}
 
 	}
@@ -480,6 +527,9 @@ public class EvaluationService {
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
 		// For a number of times equal to the input:
+		for (int counter = i; counter > 0; counter--) {
+			
+		}
 			// While a number is selected:
 				// If there is any multiple found besides the number and 1, go to the next one.
 		return 0;
@@ -520,12 +570,39 @@ public class EvaluationService {
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
 			// Destroy all spaces and punctuation
-			// If letter is less than 13
-				// New value += 2*(13 - value) + 1
-			// Else
-				// New value -= 2*(value - 13) + 1
+			StringBuilder workspace = new StringBuilder(string.toLowerCase());
+			for (int i = 0; i < string.length(); i++) {
+				if (string.charAt(i) == ' ' || string.charAt(i) == ',' || string.charAt(i) == '.') {
+					workspace.deleteCharAt(i);
+				}
+			}
+			
+			for (int j = 0; j < workspace.length(); j++) {
+				// If letter is less than 13
+					// New value += 2*(13 - value) + 1
+				int charValue = Character.getNumericValue(workspace.charAt(j));
+				if (charValue >= 59 && charValue < 59 + 13) {
+					charValue += 2*(13 - charValue) + 1;
+					workspace.setCharAt(j, (char) charValue);
+				}
+				else if (charValue >= 59 + 13 && charValue < 59 + 26) {
+					// Else
+					// New value -= 2*(value - 13) + 1
+					charValue -= 2*(charValue - 13) + 1;
+					workspace.setCharAt(j, (char) charValue);
+				}
+			}
+			
 			// Format and return the new String
-			return null;
+			for (int k = 0; k < workspace.length(); k++) {
+				int offset = 0;
+				if ((k + 1) % 5 == offset) {
+					workspace.insert(k, " ");
+					k++;
+					offset++;
+				}
+			}
+			return workspace.toString();
 		}
 
 		/**
@@ -537,6 +614,16 @@ public class EvaluationService {
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
 			// Same as above, but don't bother formatting.
+			StringBuilder workspace = new StringBuilder(encode(string));
+			
+			// Calling the above method left behind a bunch of white spaces
+			// Remove white space with this code block
+			for (int i = 0; i < string.length(); i++) {
+				if (string.charAt(i) == ' ') {
+					workspace.deleteCharAt(i);
+				}
+			}
+			
 			return null;
 		}
 	}
@@ -566,10 +653,34 @@ public class EvaluationService {
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
 		// Eliminate dashes
+		StringBuilder workspace = new StringBuilder(string);
+		for (int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) == '-') {
+				workspace.deleteCharAt(i);
+			}
+		}
+		int[] digits = new int[10];
+		int total = 0;
+		for (int j = 0; j < workspace.length(); j++) {
+			if (!Character.isDigit(workspace.charAt(j))) {
+				if (j == 9) {
+					if (workspace.charAt(j) == 'X') {
+						digits[j] = 10;
+						total += digits[j]*(10 - j);
+					}
+					else { return false;}
+				}
+				else { return false;}
+			}
+			else {
+				digits[j] = Integer.parseInt(Character.toString(workspace.charAt(j)));
+				total += digits[j]*(10 - j);
+			}
+		}
 		// If any character is not a number or an X, the ISBN is invalid
 		// Add v1*10 + v2*9 + ... and X on the end will be 10
 		// Modulo result by 11. If it's 0, the ISBN number is valid
-		return false;
+		return total % 11 == 0;
 	}
 
 	/**
@@ -588,12 +699,24 @@ public class EvaluationService {
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
 		// If the String is less than 26 characters long, return false.
+		if (string.length() > 26) {
+			return false;
+		}
 		// Create a character array of the alphabet
+		String refString = "abcdefghijklmnopqrstuvwxyz";
 		// Create an array of 26 booleans.
+		boolean[] hits = new boolean[26];
+		boolean result = true;
 		// For each entry in the alphabet array:
+		for(int alphaNum = 0; alphaNum < refString.length(); alphaNum++) {
 			// Search the String for that letter. Log the result in the boolean array.
+			String key = refString.substring(alphaNum, alphaNum + 1);
+			hits[alphaNum] = string.indexOf(key) != -1;
+			result = result && hits[alphaNum];
+		}
+			
 		// All booleans must be true for the String to be a pangram
-		return false;
+		return result;
 	}
 
 	/**
@@ -606,11 +729,26 @@ public class EvaluationService {
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
 		// TODO Write an implementation for this method declaration
+		int startSec = 1000000000;
 		// Divide seconds by 60 for minutes, modulo for seconds
+		int seconds = startSec % 60;
+		int startMins = startSec / 60;
+		
 		// Divide minutes by 60 for hours, modulo for minutes
+		int minutes = startMins % 60;
+		int startHour = startMins / 60;
+		
 		// Divide hours by 24 for days, modulo for hours
+		int hours = startHour % 24;
+		int startDays = startHour / 24;
+		
 		// Divide days by 365 for years, modulo for days
+		int days = startDays % 365;
+		int years = startDays / 365;
+		
 		// Number of years will determine how many leap days -- add to total days.
+		int leapDays = years / 4;
+		days += leapDays;
 		// Based on date input, add years, use days to determine months, add hours, minutes, seconds.
 		return null;
 	}
@@ -630,7 +768,8 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
-		// Create an array of addends
+		// Create an array for the multiples
+		
 		// For each entry in set:
 			// Enter multiples of that number in the master array, stopping before the cutoff.
 			// Do not enter any multiples that already exist in the master array
@@ -677,13 +816,37 @@ public class EvaluationService {
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
 		// Destroy all spaces
+		StringBuilder workspace = new StringBuilder(string);
+		for (int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) == ' ') {
+				workspace.deleteCharAt(i);
+			}
+		}
+		
+		int[] digits = new int[workspace.length()];
+		int total = 0;
 		// Any non-digit characters remaining invalidate the String
+		for (int j = 0; j < workspace.length(); j++) {
+			if (!Character.isDigit(workspace.charAt(j))) {
+				return false;
+			}
+			else {
+				digits[j] = Integer.parseInt(Character.toString(workspace.charAt(j)));
+				if (j % 2 == 1) {
+					digits[j] *= 2;
+					if (digits[j] > 9) {
+						digits[j] -= 9;
+					}
+				}
+				total += digits[j];
+			}
+		}
 		// For each character in the String:
 			// If the character's index is odd (zero-based counting):
 				// Double the number. Subtract 9 from any numbers that would be greater than 9.
 		// Sum the resulting array.
 		// Return true if the result % 10 == 0
-		return false;
+		return total % 10 == 0;
 	}
 
 	/**
@@ -716,6 +879,7 @@ public class EvaluationService {
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
 		// Start paying attention at the first number in the question.
+		
 		// Parse each number to num1 and num2
 		// Parse the operation command.
 		// Use switch to determine what to do with the two numbers, based on the parsed command.
