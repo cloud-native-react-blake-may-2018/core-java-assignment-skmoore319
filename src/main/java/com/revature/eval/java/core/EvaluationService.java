@@ -443,32 +443,18 @@ public class EvaluationService {
 	 * @param input
 	 * @return
 	 */
+	// COMPLETE
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		// Set number of digits = 1
-		int numDigits = 1;
-		// Set counter1 = input
-		int counter1 = input;
-		// While counter1/10 !=0
-		while (counter1/10 != 0) {
-			// digits += 1
-			numDigits += 1;
-			// Set counter1 %= 10
-			counter1 %= 10;
-		}
+		// The number of digits should be the length of a string containing the input
+		String inputString = Integer.toString(input);
 		
-		// Empty array
-		int[] powers = new int[10];
-		// Set counter2 = digits
-		int counter2 = numDigits;
-		int index = 0;
+		int numDigits = inputString.length();
+		
 		int total = 0;
-		// While counter2 != 0
-		for (int i = counter2-1; i >= 0; i--) {
-			// Use divide and modulo to get each digit. Raise it to number of digits
-			powers[index] = (int) Math.pow(((input % Math.pow(10, i+1))/Math.pow(10, i)), numDigits);
-			total += powers[index];
-			index++;
+		// Iterate using the input string to raise and sum the numbers
+		for (int i = 0; i < numDigits; i++) {
+			total += Math.pow(Double.parseDouble(Character.toString(inputString.charAt(i))), numDigits);
 		}
 		
 		// Return true if input = sum of the elements in this array.
