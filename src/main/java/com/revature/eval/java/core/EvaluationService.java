@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -256,15 +258,34 @@ public class EvaluationService {
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
 		// Determine how words might be separated (by spaces, commas, or new line characters)
-		// Create an empty Map.
-		// While the end of the string has not yet been reached:
-			// Separate out the next word by space, comma, or newline.
-			// If the next word matches any entry in the map:
-				// Increment the integer of the corresponding key in the Map
-			// Else
-				// Add this word to the Map and set the corresponding value to 1
+		
+		// Split the string with multiple delimters: " " "," "\n" ",\n", using the regex "or" sequence "|\\"
+		String[] words = string.split(" |\\,|\\|\\,\n");
+		
+		System.out.println(Arrays.toString(words));
+		// Create an empty map
+		Map<String, Integer> wordList = new HashMap<>();
+		
+		// For every word in the words array
+		for (int i = 0; i < words.length; i++) {
+			
+			// If the key doesn't exist in the Map,
+			if (!wordList.containsKey(words[i])) {
+				// Add the word to the map, and set the value equal to 1
+				wordList.put(words[i], 1);
+				
+			}
+			else {
+				// Increment the count of that word by 1
+				int newVal = Integer.valueOf(wordList.get(words[i])) + 1;
+				// Technically, this overwrites the entry, but the value will update as it needs to.
+				wordList.put(words[i], newVal);
+			}
+			
+		}
+		
 		// Return the Map
-		return null;
+		return wordList;
 	}
 
 	/**
@@ -360,14 +381,51 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	// COMPLETE
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
 		// Split String into an array of words, separated by spaces
+		String[] words = string.split(" ");
+		
+		String answer = "";
+		
 		// For each String in the array
+		for (int i = 0; i < words.length; i++) {
+			String tail = "ay";
+			if (words[i].toLowerCase().charAt(0) == 'a' || words[i].toLowerCase().charAt(0) == 'e' ||
+					words[i].toLowerCase().charAt(0) == 'i' || words[i].toLowerCase().charAt(0) == 'o' ||
+					words[i].toLowerCase().charAt(0) == 'u') {
+				words[i] = words[i] + tail;
+			}
+			else {
+				int endPoint = 0;
+				String vowels = "aeiou";
+				for (int j = 0; j < words[i].length(); j++) {
+					// If the above list of vowels contains the character at the specified index of the current string:
+					if (vowels.contains(String.valueOf(words[i].toLowerCase().charAt(j)))) {
+						// Watch out for "qu"! That's considered a consonant
+						if (j > 0) {
+							if (words[i].toLowerCase().charAt(j) == 'u' && words[i].toLowerCase().charAt(j-1) == 'q') {
+								continue;
+							}
+						}
+						
+						// Then the for loop has reached the first character that is a vowel in the string.
+						endPoint = j;
+						break;
+					}
+				}
+				String header = words[i].substring(0, endPoint);
+				words[i] = words[i].substring(endPoint, words[i].length()) + header + tail;
+			}
+			answer = answer + words[i] + " ";
+		}
 			// Select all leading consonants before the first value (including zero characters)
 			// Move any leading consonants to the end of the String, and add "ay"
 		// Return the elements to a new String, separated by spaces
-		return null;
+		answer = answer.substring(0, answer.length()-1);
+		System.out.println(answer);
+		return answer;
 	}
 
 	/**
@@ -728,6 +786,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
+		
+		// This return type is an interface! This means you need to return
+		// an object of any type that implements the Temporal interface!
+		
 		// TODO Write an implementation for this method declaration
 		int startSec = 1000000000;
 		// Divide seconds by 60 for minutes, modulo for seconds
