@@ -534,33 +534,51 @@ public class EvaluationService {
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
 			// For each alphabetic character in the String:
+			System.out.println(Character.getNumericValue('A'));
+			System.out.println(Character.getNumericValue('a'));
+			String lowerTargets = "abcdefghijklmnopqrstuvwxyz";
+			String upperTargets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			String finalAnswer = "";
+			
 			StringBuilder workspace = new StringBuilder(string);
-			int lowerStart = 65;
-			int upperStart = 97;
-			for (int i = 0; i > string.length(); i++) {
-				if(Character.isAlphabetic(Character.getNumericValue(string.charAt(i)))) {
-					// && 
-					if (Character.isLowerCase(string.charAt(i))) {
-						if (Character.getNumericValue(string.charAt(i)) > lowerStart+26) {
-							int distance = Math.abs(Character.getNumericValue(string.charAt(i)) - (lowerStart+26));
-							int difference = Math.abs(distance - key);
-							workspace.setCharAt(i, (char) (lowerStart + difference));
-						}
-						else {
-							workspace.setCharAt(i,  (char) (Character.getNumericValue(string.charAt(i)) + key));
-						}
+			int lowerStart = Character.valueOf('a');
+			int lowerLimit = Character.valueOf('z') + 1;
+			int upperStart = Character.valueOf('A');
+			int upperLimit = Character.valueOf('Z') + 1;
+			
+			for (int i = 0; i < string.length(); i++) {
+				
+				String active = string.substring(i, i + 1);
+				char activeChar = active.charAt(0);
+				
+				if (lowerTargets.contains(active)) {
+					if (Character.valueOf(string.charAt(i)) + key >= lowerLimit) {
+						
+						int distance = Math.abs(Character.valueOf(string.charAt(i)) - lowerLimit);
+						int difference = Math.abs(distance - key);
+						activeChar = (char) (lowerStart + difference);
+						
 					}
 					else {
-						if (Character.getNumericValue(string.charAt(i)) > upperStart+26) {
-							int distance = Math.abs(Character.getNumericValue(string.charAt(i)) - (upperStart+26));
-							int difference = Math.abs(distance - key);
-							workspace.setCharAt(i, (char) (upperStart + difference));
-						}
-						else {
-							workspace.setCharAt(i,  (char) (Character.getNumericValue(string.charAt(i)) + key));
-						}
+						activeChar =  (char) (Character.valueOf(activeChar) + key);
 					}
+					
+				} else if (upperTargets.contains(active)) {
+					
+					if (Character.valueOf(string.charAt(i)) + key >= upperLimit) {
+						
+						int distance = Math.abs(Character.valueOf(string.charAt(i)) - upperLimit);
+						int difference = Math.abs(distance - key);
+						activeChar = (char) (upperStart + difference);
+						
+					}
+					else {
+						activeChar =  (char) (Character.valueOf(activeChar) + key);
+					}
+					
 				}
+				finalAnswer = finalAnswer + Character.toString(activeChar);
+				
 			}
 				// Add the value of the key to the letter.
 				// If the key goes beyond a letter value:
@@ -568,7 +586,8 @@ public class EvaluationService {
 					// Get the difference between this distance and the cipher
 					// Start from "a" and use the difference to reset.
 			// Return the encrypted String
-			return workspace.toString();
+			
+			return finalAnswer;
 		}
 
 	}
@@ -704,6 +723,16 @@ public class EvaluationService {
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
 			// Same as above, but don't bother formatting.
+			
+			// Destroy all spaces and punctuation
+			String clean = string.replaceAll(" ", "");
+			String targets = "abcdefghijklmnopqrstuvwxyz";
+			
+			// If letter is less than 13
+				// New value += 2*(13 - value) + 1
+			// Else
+				// New value -= 2*(value - 13) + 1
+			
 			StringBuilder workspace = new StringBuilder(encode(string));
 			
 			// Calling the above method left behind a bunch of white spaces
@@ -939,6 +968,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	// COMPLETED
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
 		// Test for punctuation and return false if any is present.
@@ -1012,6 +1042,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	// COMPLETED
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
 		// Start paying attention at the first number in the question.
