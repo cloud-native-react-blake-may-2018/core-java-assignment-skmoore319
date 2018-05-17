@@ -523,6 +523,7 @@ public class EvaluationService {
 	 * gur ynml qbt. ROT13 Gur dhvpx oebja sbk whzcf bire gur ynml qbt. gives The
 	 * quick brown fox jumps over the lazy dog.
 	 */
+	// COMPLETED
 	static class RotationalCipher {
 		private int key;
 
@@ -540,7 +541,6 @@ public class EvaluationService {
 			String upperTargets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			String finalAnswer = "";
 			
-			StringBuilder workspace = new StringBuilder(string);
 			int lowerStart = Character.valueOf('a');
 			int lowerLimit = Character.valueOf('z') + 1;
 			int upperStart = Character.valueOf('A');
@@ -668,6 +668,7 @@ public class EvaluationService {
 	 * rxpyi ldmul cqfnk hlevi gsvoz abwlt gives thequickbrownfoxjumpsoverthelazydog
 	 *
 	 */
+	// COMPLETED
 	static class AtbashCipher {
 
 		/**
@@ -679,39 +680,34 @@ public class EvaluationService {
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
 			// Destroy all spaces and punctuation
-			StringBuilder workspace = new StringBuilder(string.toLowerCase());
-			for (int i = 0; i < string.length(); i++) {
-				if (string.charAt(i) == ' ' || string.charAt(i) == ',' || string.charAt(i) == '.') {
-					workspace.deleteCharAt(i);
+			
+			// Run decode on the string. Now it just needs to be formatted
+			String toFormat = AtbashCipher.decode(string);
+			String finalAnswer = "";
+			
+			// Encoding was easy. Formatting it is the tricky part
+			List<String> segments = new ArrayList<>();
+			int listCounter = 0;
+			
+			for (int i = 0; i < toFormat.length(); i += 5) {
+				if (toFormat.length() - i < 5) {
+					segments.add(toFormat.substring(i, toFormat.length()));
+					finalAnswer = finalAnswer + segments.get(listCounter);
+					break;
 				}
+				else {
+					segments.add(toFormat.substring(i, i + 5));
+					// Add a space the end of every entry except the last one
+					segments.set(listCounter, segments.get(listCounter) + " ");
+					finalAnswer = finalAnswer + segments.get(listCounter);
+				}
+				listCounter++;
+			}
+			if (finalAnswer.charAt(finalAnswer.length() - 1) == ' ') {
+				finalAnswer = finalAnswer.substring(0, finalAnswer.length() - 1);
 			}
 			
-			for (int j = 0; j < workspace.length(); j++) {
-				// If letter is less than 13
-					// New value += 2*(13 - value) + 1
-				int charValue = Character.getNumericValue(workspace.charAt(j));
-				if (charValue >= 59 && charValue < 59 + 13) {
-					charValue += 2*(13 - charValue) + 1;
-					workspace.setCharAt(j, (char) charValue);
-				}
-				else if (charValue >= 59 + 13 && charValue < 59 + 26) {
-					// Else
-					// New value -= 2*(value - 13) + 1
-					charValue -= 2*(charValue - 13) + 1;
-					workspace.setCharAt(j, (char) charValue);
-				}
-			}
-			
-			// Format and return the new String
-			for (int k = 0; k < workspace.length(); k++) {
-				int offset = 0;
-				if ((k + 1) % 5 == offset) {
-					workspace.insert(k, " ");
-					k++;
-					offset++;
-				}
-			}
-			return workspace.toString();
+			return finalAnswer;
 		}
 
 		/**
@@ -725,25 +721,38 @@ public class EvaluationService {
 			// Same as above, but don't bother formatting.
 			
 			// Destroy all spaces and punctuation
-			String clean = string.replaceAll(" ", "");
+			String clean = string.replaceAll(" |\\,|\\.", "").toLowerCase();
+			
+			// For loop output will go here
+			String finalAnswer = "";
+			
+			// Use this string to identify acceptable characters for alteration
 			String targets = "abcdefghijklmnopqrstuvwxyz";
 			
-			// If letter is less than 13
-				// New value += 2*(13 - value) + 1
-			// Else
-				// New value -= 2*(value - 13) + 1
+			// Figure out the Unicode value of the middle character (13th in the alphabet)
+			char middle = 'm';
+			int normalize = Character.valueOf('a') - 1;
 			
-			StringBuilder workspace = new StringBuilder(encode(string));
-			
-			// Calling the above method left behind a bunch of white spaces
-			// Remove white space with this code block
-			for (int i = 0; i < string.length(); i++) {
-				if (string.charAt(i) == ' ') {
-					workspace.deleteCharAt(i);
+			// For every letter in the string
+			for (int i = 0; i < clean.length(); i++) {
+				char activeChar = clean.charAt(i);
+				if (targets.contains(Character.toString(activeChar))) {
+					
+					// If letter is less than 13
+					if (activeChar < middle) {
+						// New value += 2*(13 - value) + 1
+						activeChar = (char) (activeChar + (2*(middle - activeChar)) + 1);
+					}
+					else {
+						// New value -= 2*(value - 13) + 1
+						activeChar = (char) (activeChar - (2*(activeChar - middle)) + 1);
+					}
+				
 				}
+				finalAnswer = finalAnswer + Character.toString(activeChar);
 			}
 			
-			return null;
+			return finalAnswer;
 		}
 	}
 
