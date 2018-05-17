@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +17,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	// FINISHED
+	// COMPLETED
 	public String reverse(String string) {
 		char[] reversed = new char[string.length()];
 		for (int i = reversed.length - 1, j=0; i >= 0; i--, j++) {
@@ -32,7 +34,7 @@ public class EvaluationService {
 	 * @param phrase
 	 * @return
 	 */
-	// FINISHED
+	// COMPLETED
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
 		// Add a character to the output string IF
@@ -62,7 +64,7 @@ public class EvaluationService {
 	 * different lengths.
 	 *
 	 */
-	// FINISHED
+	// COMPLETED
 	static class Triangle {
 		private double sideOne;
 		private double sideTwo;
@@ -138,7 +140,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	// FINISHED
+	// COMPLETED
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
 		// Start a score. Set it at zero
@@ -211,39 +213,30 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
+	// COMPLETED
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
 		// Throw exceptions for any inputs that have non-numeric characters or do not have 10 characters
 		// Remove parentheses, dots, dashes, and spaces from the input
-		StringBuilder workspace = new StringBuilder();
-		for(int i = 0; i < string.length(); i++) {
-			if (string.charAt(i) != ' ' && string.charAt(i) != '-' && string.charAt(i) != '(' && string.charAt(i) != ')') {
-				workspace.append(string.charAt(i));
-			}
+		String[] noDirt = string.split(" |\\-|\\(|\\)|\\.");
+		String cleanString = "";
+		for (String e: noDirt) {
+			cleanString = cleanString + e;
 		}
-		if (workspace.length() > 10) {
-			try {
-				throw new IllegalArgumentException();
-			}
-			catch (IllegalArgumentException len) {
-				System.out.println("Number must be less than 10 digits");
-			}
+		
+		System.out.println(cleanString);
+		
+		if (cleanString.length() > 10) {
+			throw new IllegalArgumentException();
 		}
 		else {
-			for (int i = 1; i < workspace.length(); i++) {
-				//This if statement should filter out any characters with values outside of 0-9
-				if (workspace.charAt(i) < 91 || workspace.charAt(i) > 100) {
-					try {
-						throw new IllegalArgumentException();
-					}
-					catch (IllegalArgumentException notNum) {
-						System.out.println("Input numerical characters only");
-						
-					}
+			for (int i = 0; i < cleanString.length(); i++) {
+				if (!Character.isDigit(cleanString.charAt(i))) {
+					throw new IllegalArgumentException();
 				}
 			}
 		}
-		return workspace.toString();
+		return cleanString;
 	}
 
 	/**
@@ -283,6 +276,8 @@ public class EvaluationService {
 			}
 			
 		}
+		
+		System.out.println(wordList.toString());
 		
 		// Return the Map
 		return wordList;
@@ -381,7 +376,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	// COMPLETE
+	// COMPLETED
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
 		// Split String into an array of words, separated by spaces
@@ -472,12 +467,34 @@ public class EvaluationService {
 	 * @param l
 	 * @return
 	 */
+	// COMPLETED
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		// Divide input cleanly by 2... or 3... or 5... or the next prime
-		// Divide result by 2... or 3... etc...
-		// Method is finished when dividing results in 1
-		return null;
+		List<Long> factors = new ArrayList<>();
+		boolean done = false;
+		while (!done) {
+			// Divide the input by every number up to that input
+			for (long i = 2l; i <= l; i++) {
+				// Method is finished when dividing results in 1
+				if (i == l) {
+					factors.add(i);
+					done = true;
+				}
+				else {
+					// If the input is divisible by the current counted number:
+					if (l % i == 0) {
+						// Add this divisor to the list of factors
+						factors.add(i);
+						// Set the new dividend equal to the quotient
+						l /= i;
+						break;
+					}
+				}
+			}
+		}
+		
+		
+		return factors;
 	}
 
 	/**
@@ -570,13 +587,42 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
-		// For a number of times equal to the input:
-		for (int counter = i; counter > 0; counter--) {
+		// Consider the following: THREE for loops
+		// The first one counts how many primes have been found so far.
+		// The second counts up beyond the maximum current prime.
+		// The third loop counts up, dividing the current value in the second loop by every number (brut force)
+		int maxPrimeFound = 2;
+		int x = maxPrimeFound;
+		
+		// The first for loop. This will keep track of how many prime numbers need to be found
+		for (int primesNeeded = 0; primesNeeded <= i; primesNeeded++) {
+			// Start counting from 2, but you will need a while loop
+			System.out.println("Finding Prime " + primesNeeded);
+			boolean isPrime = false;
+			System.out.println("Prime Number: " + isPrime);
 			
+			while (!isPrime) {
+				// For all values from 2, leading up to x, divide these numbers to determine whether they are prime.
+				for (int j = 2; j <= x; j++) {
+					System.out.println("Dividing " + x + " by " + j);
+					// If x is divisible by any number that is not equal to it, exit the for loop.
+					if (j != x) {
+						if (x % j == 0) {
+							break;
+						}
+					}
+					// This flag should only trip at the end of the loop, if no other divisible factors broke the loop first.
+					isPrime = true;
+					maxPrimeFound = x;
+				}
+				
+				//Increment the number you are looking at after you have divided it by all other numbers
+				x++;
+			}
 		}
 			// While a number is selected:
 				// If there is any multiple found besides the number and 1, go to the next one.
-		return 0;
+		return maxPrimeFound;
 	}
 
 	/**
@@ -740,14 +786,18 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	// COMPLETED
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
 		// If the String is less than 26 characters long, return false.
-		if (string.length() > 26) {
+		
+		if (string.length() < 26) {
+			
 			return false;
 		}
 		// Create a character array of the alphabet
 		String refString = "abcdefghijklmnopqrstuvwxyz";
+		
 		// Create an array of 26 booleans.
 		boolean[] hits = new boolean[26];
 		boolean result = true;
@@ -760,6 +810,7 @@ public class EvaluationService {
 		}
 			
 		// All booleans must be true for the String to be a pangram
+		
 		return result;
 	}
 
@@ -777,6 +828,7 @@ public class EvaluationService {
 		// an object of any type that implements the Temporal interface!
 		
 		// TODO Write an implementation for this method declaration
+		
 		int startSec = 1000000000;
 		// Divide seconds by 60 for minutes, modulo for seconds
 		int seconds = startSec % 60;
@@ -798,6 +850,11 @@ public class EvaluationService {
 		int leapDays = years / 4;
 		days += leapDays;
 		// Based on date input, add years, use days to determine months, add hours, minutes, seconds.
+		
+		Temporal newDate = (LocalDateTime) given;
+		((LocalDateTime) newDate).plusYears(years);
+		
+		
 		return null;
 	}
 
@@ -817,12 +874,34 @@ public class EvaluationService {
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
 		// Create an array for the multiples
-		
+		List<Integer> multiples = new ArrayList<>();
+		int total = 0;
 		// For each entry in set:
+		for (int num: set) {
+			
+			// Initially, you will multiply by 1
+			int factor = 1;
+			boolean overflow = false;
+			
+			while (!overflow) {
+				
+				int mult = factor * num;
+				if (!multiples.toString().contains(Integer.toString(mult))) {
+					if (mult >= i) {
+						overflow = true;
+						break;
+					}
+					multiples.add(mult);
+					
+					total += mult;
+				}
+				factor++;
+			}
+		}
 			// Enter multiples of that number in the master array, stopping before the cutoff.
 			// Do not enter any multiples that already exist in the master array
 		// Sum the master array. Return the result.
-		return 0;
+		return total;
 	}
 
 	/**
@@ -927,11 +1006,45 @@ public class EvaluationService {
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
 		// Start paying attention at the first number in the question.
-		
+		String[] words = string.split(" |\\?");
+		int distance;
+		if (words[3].substring(0, 2).equals("mu") || words[3].charAt(0) == 'd') {
+			distance = 3;
+		}
+		else {
+			distance = 2;
+		}
 		// Parse each number to num1 and num2
+		int num1 = Integer.parseInt(words[2]);
+		int num2 = Integer.parseInt(words[2 + distance]);
+		
 		// Parse the operation command.
+		String operation = words[3];
+		int answer;
+		
 		// Use switch to determine what to do with the two numbers, based on the parsed command.
-		return 0;
+		switch (operation) {
+		
+		case "plus":
+			answer = num1 + num2;
+			// System.out.println(num1 + " + " + num2 + " = " + answer);
+			break;
+		case "minus":
+			answer = num1 - num2;
+			// System.out.println(num1 + " - " + num2 + " = " + answer);
+			break;
+		case "multiplied":
+			answer = num1 * num2;
+			// System.out.println(num1 + " * " + num2 + " = " + answer);
+			break;
+		case "divided":
+			answer = num1 / num2;
+			// System.out.println(num1 + " / " + num2 + " = " + answer);
+			break;
+		default:
+			answer = 0;
+		}
+		return answer;
 	}
 
 }
