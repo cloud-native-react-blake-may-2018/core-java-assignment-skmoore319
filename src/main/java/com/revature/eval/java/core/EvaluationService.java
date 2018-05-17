@@ -740,21 +740,20 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	// COMPLETED
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
 		// Eliminate dashes
+		String noDashes = string.replaceAll("-", "");
+		
 		StringBuilder workspace = new StringBuilder(string);
-		for (int i = 0; i < string.length(); i++) {
-			if (string.charAt(i) == '-') {
-				workspace.deleteCharAt(i);
-			}
-		}
-		int[] digits = new int[10];
+
+		int[] digits = new int[noDashes.length()];
 		int total = 0;
-		for (int j = 0; j < workspace.length(); j++) {
-			if (!Character.isDigit(workspace.charAt(j))) {
-				if (j == 9) {
-					if (workspace.charAt(j) == 'X') {
+		for (int j = 0; j < noDashes.length(); j++) {
+			if (!Character.isDigit(noDashes.charAt(j))) {
+				if (j == noDashes.length()-1) {
+					if (noDashes.charAt(j) == 'X') {
 						digits[j] = 10;
 						total += digits[j]*(10 - j);
 					}
@@ -763,7 +762,7 @@ public class EvaluationService {
 				else { return false;}
 			}
 			else {
-				digits[j] = Integer.parseInt(Character.toString(workspace.charAt(j)));
+				digits[j] = Integer.parseInt(Character.toString(noDashes.charAt(j)));
 				total += digits[j]*(10 - j);
 			}
 		}
