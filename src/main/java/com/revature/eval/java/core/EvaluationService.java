@@ -941,36 +941,46 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		// Destroy all spaces
-		StringBuilder workspace = new StringBuilder(string);
+		// Test for punctuation and return false if any is present.
+		if (string.contains("-") || string.contains(".") || string.contains(",")) {
+			return false;
+		}
+		
+		// Test for letters. Return false if any are present
+		String valid = "1234567890 ";
 		for (int i = 0; i < string.length(); i++) {
-			if (string.charAt(i) == ' ') {
-				workspace.deleteCharAt(i);
+			// If the current character is not also contained somewhere in the string of valid characters
+			if (!valid.contains(string.substring(i, i+1))) {
+				System.out.println("Letter tripped");
+				return false;
 			}
 		}
 		
-		int[] digits = new int[workspace.length()];
+		// Destroy all spaces
+		String clean = string.replaceAll(" ", "");
+		System.out.println(clean);
+		
+		int[] digits = new int[clean.length()];
 		int total = 0;
-		// Any non-digit characters remaining invalidate the String
-		for (int j = 0; j < workspace.length(); j++) {
-			if (!Character.isDigit(workspace.charAt(j))) {
-				return false;
-			}
-			else {
-				digits[j] = Integer.parseInt(Character.toString(workspace.charAt(j)));
-				if (j % 2 == 1) {
-					digits[j] *= 2;
-					if (digits[j] > 9) {
-						digits[j] -= 9;
-					}
+		
+		// Start from the right end
+		for (int j = clean.length()-1; j >= 0; j--) {
+			// Place the current digit in the corresponding index of our array of ints
+			digits[j] = Integer.parseInt(Character.toString(clean.charAt(j)));
+			// If the digit is one of every other digit from the right
+			if (((clean.length() - 1) - j) % 2 == 1) {
+				// Double that digit
+				digits[j] *= 2;
+				// And if the result is greater than 9...
+				if (digits[j] > 9) {
+					// The subtract 9
+					digits[j] -= 9;
 				}
-				total += digits[j];
 			}
+			// Add the current digit to the running total
+			total += digits[j];
 		}
-		// For each character in the String:
-			// If the character's index is odd (zero-based counting):
-				// Double the number. Subtract 9 from any numbers that would be greater than 9.
-		// Sum the resulting array.
+		
 		// Return true if the result % 10 == 0
 		return total % 10 == 0;
 	}
