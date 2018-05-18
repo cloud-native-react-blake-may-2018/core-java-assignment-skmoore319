@@ -606,47 +606,60 @@ public class EvaluationService {
 	 * @param i
 	 * @return
 	 */
+	// COMPLETED
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
 		// Consider the following: THREE for loops
 		// The first one counts how many primes have been found so far.
 		// The second counts up beyond the maximum current prime.
 		// The third loop counts up, dividing the current value in the second loop by every number (brut force)
-		if (i > 20) {
-			return 0;
+
+		int lastPrimeFound = 2;
+		// Simple case. Just return 2 as the first prime
+		if (i < 1) {
+			throw new IllegalArgumentException();
 		}
-		int maxPrimeFound = 2;
-		int x = maxPrimeFound;
-		
-		// The first for loop. This will keep track of how many prime numbers need to be found
-		for (int primesNeeded = 0; primesNeeded <= i; primesNeeded++) {
-			// Start counting from 2, but you will need a while loop
-			System.out.println("Finding Prime " + primesNeeded);
-			boolean isPrime = false;
-			System.out.println("Prime Number: " + isPrime);
+		else {
 			
-			while (!isPrime) {
-				// For all values from 2, leading up to x, divide these numbers to determine whether they are prime.
-				for (int j = 2; j <= x; j++) {
-					System.out.println("Dividing " + x + " by " + j);
-					// If x is divisible by any number that is not equal to it, exit the for loop.
-					if (j != x) {
-						if (x % j == 0) {
-							break;
-						}
-					}
-					// This flag should only trip at the end of the loop, if no other divisible factors broke the loop first.
-					isPrime = true;
-					maxPrimeFound = x;
-				}
+			int tracer = 3;
+			// The nth prime number we're searching for
+			for (int primeSearch = 2; primeSearch <= i; primeSearch++) {
 				
-				//Increment the number you are looking at after you have divided it by all other numbers
-				x++;
+				// System.out.println("Searching for prime #" + primeSearch);
+				
+				boolean isPrime = true; // Assume that tracer is a prime number.
+				while (isPrime) {
+					int start = 2; // Always start from 2
+					do {
+						
+						//System.out.println("Dividing " + tracer + " by " + start);
+						isPrime = tracer % start != 0;
+						//System.out.println("isPrime = " + isPrime);
+						if (!isPrime) {
+							start += tracer;
+						}
+						start++;
+					} while (start <= (tracer/2));
+					
+					// If the isPrime flag survived the divisions above
+					if (isPrime) {
+						lastPrimeFound = tracer;
+						//System.out.println("Set lastPrimeFound equal to " + tracer);
+						tracer++;
+						break;
+					}
+					else {
+						tracer++;
+						isPrime = true;
+					}
+					
+				}
+				// System.out.println("Last prime found: " + lastPrimeFound);
 			}
+			
 		}
-			// While a number is selected:
-				// If there is any multiple found besides the number and 1, go to the next one.
-		return maxPrimeFound;
+
+		return lastPrimeFound;
 	}
 
 	/**
@@ -736,7 +749,6 @@ public class EvaluationService {
 			
 			// Figure out the Unicode value of the middle character (13th in the alphabet)
 			char middle = 'm';
-			int normalize = Character.valueOf('a') - 1;
 			
 			// For every letter in the string
 			for (int i = 0; i < clean.length(); i++) {
@@ -789,8 +801,6 @@ public class EvaluationService {
 		// Eliminate dashes
 		String noDashes = string.replaceAll("-", "");
 		
-		StringBuilder workspace = new StringBuilder(string);
-
 		int[] digits = new int[noDashes.length()];
 		int total = 0;
 		for (int j = 0; j < noDashes.length(); j++) {
