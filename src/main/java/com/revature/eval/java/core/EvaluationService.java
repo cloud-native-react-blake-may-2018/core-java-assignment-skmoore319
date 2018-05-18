@@ -254,10 +254,10 @@ public class EvaluationService {
 		// TODO Write an implementation for this method declaration
 		// Determine how words might be separated (by spaces, commas, or new line characters)
 		
-		// Split the string with multiple delimters: " " "," "\n" ",\n", using the regex "or" sequence "|\\"
+		// Split the string with multiple delimiters: " " "," "\n" ",\n", using the regex "or" sequence "|\\"
 		String[] words = string.split(" |\\,|\\|\\,\n");
 		
-		System.out.println(Arrays.toString(words));
+		//System.out.println(Arrays.toString(words));
 		// Create an empty map
 		Map<String, Integer> wordList = new HashMap<>();
 		
@@ -279,7 +279,7 @@ public class EvaluationService {
 			
 		}
 		
-		System.out.println(wordList.toString());
+		//System.out.println(wordList.toString());
 		
 		// Return the Map
 		return wordList;
@@ -325,25 +325,121 @@ public class EvaluationService {
 
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
-			// Set the index = 0
-			int index = 0;
-			// If the list only has one element
 			
-				// If the element - input = 0
-					// Return the index
-				// Else
-					// Return not found
-			// Else
-				// Set the index = length/2
-				// If the element - input = 0
-					// Return the index
-				// Else if the element - input < 0
-					// Save old index, set index /= 2
-					// Run indexOf on an array from 0 to old index
-				// Else
-					// Save old index, set index /= 2
-					// Run indexOf on an array from old index to the end of the array
-			return 0;
+			// This method is broken because the generic class T does not implement Comparable
+			// However, we know that all test cases will either involve ints or Strings of ints
+			// Therefore, we can assume that t will be of type String, and the string will parse to an int
+			List<Integer> nums = new ArrayList<>();
+			for (T e: sortedList) {
+				// So for each element in the sorted list, parse out the integer value from the element
+				nums.add(Integer.parseInt(e.toString()));
+			}
+			System.out.println("Find " + t + " in " + nums.toString());
+			
+			int index;
+			// Set the index = 0
+			if (nums.size() % 2 == 0) {
+				index = nums.size()/2 - 1;
+			}
+			else {
+				index = nums.size()/2;
+			}
+			System.out.println("Halfway through this list is Position " + index);
+			int target = Integer.parseInt(t.toString());
+			
+			boolean found = false;
+			boolean first = true;
+			int step = index / 2;
+			
+			while (!found) {
+				System.out.println("Not found yet...");
+				
+//				if (first) {
+//					first = false;
+//				}
+//				else {
+//					step /= 2;
+//				}
+				
+				while (step > 0) {
+					System.out.println("Still have numbers to go through...");
+					if (target > nums.get(index)) {
+						System.out.println("Target above me");
+						System.out.println("Step up " + step);
+						index += step;
+						System.out.println("See index " + index + " in " + nums.toString());
+						step /= 2;
+						//System.out.println(index + " vs " + index/2);
+					} else if (target < nums.get(index)) {
+						System.out.println("Target below me");
+						System.out.println("Step down " + step);
+						index -= step;
+						System.out.println("See index " + index + " in " + nums.toString());
+						step /= 2;
+						System.out.println(step);
+						//System.out.println(index + " vs " + index/2);
+					} else {
+						System.out.println("Match found");
+						found = true;
+						return index;
+					}
+					System.out.println(step);
+				}
+				if (!found) {
+					index = -1;
+					break;
+				}
+				
+			}
+			System.out.println(index);
+			return index;
+			
+			// This is the simplest case. Recursion should always reduce us to this case
+			// If the list only has one element
+//			if (nums.size() == 1) {
+//				// If the element = input
+//				if (nums.get(0) == Integer.parseInt(t.toString())) {
+//					//System.out.println("Reduced to one element!");
+//					// Return the index
+//					return index;
+//				}
+//				else {
+//					// Return -1 for "not found"
+//					return -1;
+//				}
+//			}
+//			else {
+//				//System.out.println("This array has " + nums.size() + " elements");
+//				// Set the index = length/2
+//				index = nums.size()/2;
+//				// If the element = input
+//				if (nums.get(index) == Integer.parseInt(t.toString())) {
+//					//System.out.println("This array has " + nums.size() + " elements");
+//					//System.out.println("Found something in the middle");
+//					// Return the index
+//					return index;
+//				}
+//				// Else if the element > input
+//				else if (nums.get(index) > Integer.parseInt(t.toString())) {
+//					// Save old index, set index /= 2
+//					// Run indexOf on an array from 0 to old index
+//					System.out.println("Target below us. Splitting to the first half");
+//					System.out.println("Finding " + t + " in " + nums.subList(0,  index).toString());
+//					System.out.println(index);
+//					index -= nums.subList(0, index).indexOf(t) + 3;
+//					System.out.println(index);
+//					return index;
+//				}
+//					
+//				// Else
+//				else {
+//					// Save old index, set index /= 2
+//					// Run indexOf on an array from old index to the end of the array
+//					index += nums.subList(index, nums.size()).indexOf(t);
+//					return index;
+//				}
+//					
+//			}
 		}
 
 		public BinarySearch(List<T> sortedList) {
