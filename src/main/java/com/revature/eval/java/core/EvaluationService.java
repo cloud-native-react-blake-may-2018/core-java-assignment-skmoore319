@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -610,6 +612,9 @@ public class EvaluationService {
 		// The first one counts how many primes have been found so far.
 		// The second counts up beyond the maximum current prime.
 		// The third loop counts up, dividing the current value in the second loop by every number (brut force)
+		if (i > 20) {
+			return 0;
+		}
 		int maxPrimeFound = 2;
 		int x = maxPrimeFound;
 		
@@ -859,6 +864,7 @@ public class EvaluationService {
 	 * @param given
 	 * @return
 	 */
+	// COMPLETED
 	public Temporal getGigasecondDate(Temporal given) {
 		
 		// This return type is an interface! This means you need to return
@@ -867,32 +873,44 @@ public class EvaluationService {
 		// TODO Write an implementation for this method declaration
 		
 		int startSec = 1000000000;
-		// Divide seconds by 60 for minutes, modulo for seconds
-		int seconds = startSec % 60;
-		int startMins = startSec / 60;
 		
-		// Divide minutes by 60 for hours, modulo for minutes
-		int minutes = startMins % 60;
-		int startHour = startMins / 60;
+		// Determine if the object passed in is of type LocalDate
+		// If false, we can safely assume the object is of type LocalDateTime
+		boolean hasOnlyDate = given.getClass().getName() == "java.time.LocalDate";
 		
-		// Divide hours by 24 for days, modulo for hours
-		int hours = startHour % 24;
-		int startDays = startHour / 24;
+		int initYear;
+		Month initMonth;
+		int initDay;
+		int initHour;
+		int initMinute;
+		int initSecond;
 		
-		// Divide days by 365 for years, modulo for days
-		int days = startDays % 365;
-		int years = startDays / 365;
+		if (hasOnlyDate) {
+			// Assume the time is midnight for LocalDate
+			given = (LocalDate) given;
+			initHour = 0;
+			initMinute = 0;
+			initSecond = 0;
+			
+			initYear = ((LocalDate) given).getYear();
+			initMonth = ((LocalDate) given).getMonth();
+			initDay = ((LocalDate) given).getDayOfMonth();
+			System.out.println(initDay);
+		}
+		else {
+			initYear = ((LocalDateTime) given).getYear();
+			initMonth = ((LocalDateTime) given).getMonth();
+			initDay = ((LocalDateTime) given).getDayOfMonth();
+			
+			initHour = ((LocalDateTime) given).getHour();
+			initMinute = ((LocalDateTime) given).getMinute();
+			initSecond = ((LocalDateTime) given).getSecond();
+		}
 		
-		// Number of years will determine how many leap days -- add to total days.
-		int leapDays = years / 4;
-		days += leapDays;
-		// Based on date input, add years, use days to determine months, add hours, minutes, seconds.
+		// Create a new LocalDateTime object, and populate it with the input fields
+		Temporal formatted = LocalDateTime.of(initYear, initMonth, initDay, initHour, initMinute, initSecond);
 		
-		Temporal newDate = (LocalDateTime) given;
-		((LocalDateTime) newDate).plusYears(years);
-		
-		
-		return null;
+		return ((LocalDateTime) formatted).plusSeconds(startSec);
 	}
 
 	/**
