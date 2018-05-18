@@ -250,6 +250,9 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	// Unable to find fix. All outputs are technically correct, but the test
+	// failed because it is expecting the results in a certain order, and HashMap
+	// does not support order
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
 		// Determine how words might be separated (by spaces, commas, or new line characters)
@@ -257,7 +260,6 @@ public class EvaluationService {
 		// Split the string with multiple delimiters: " " "," "\n" ",\n", using the regex "or" sequence "|\\"
 		String[] words = string.split(" |\\,|\\|\\,\n");
 		
-		//System.out.println(Arrays.toString(words));
 		// Create an empty map
 		Map<String, Integer> wordList = new HashMap<>();
 		
@@ -278,8 +280,6 @@ public class EvaluationService {
 			}
 			
 		}
-		
-		//System.out.println(wordList.toString());
 		
 		// Return the Map
 		return wordList;
@@ -334,112 +334,53 @@ public class EvaluationService {
 				// So for each element in the sorted list, parse out the integer value from the element
 				nums.add(Integer.parseInt(e.toString()));
 			}
-			System.out.println("Find " + t + " in " + nums.toString());
 			
 			int index;
-			// Set the index = 0
+			// Set the index value depending on odd or even number length lists
 			if (nums.size() % 2 == 0) {
 				index = nums.size()/2 - 1;
 			}
 			else {
 				index = nums.size()/2;
 			}
-			System.out.println("Halfway through this list is Position " + index);
 			int target = Integer.parseInt(t.toString());
 			
 			boolean found = false;
-			boolean first = true;
 			int step = index / 2;
 			
+			// The intent of this while loop is to continue checking the entry at a
+			// different index against the input, until a match is found.
+			// If no matches are found at the end, the output returns -1
 			while (!found) {
-				System.out.println("Not found yet...");
 				
-//				if (first) {
-//					first = false;
-//				}
-//				else {
-//					step /= 2;
-//				}
-				
+				// The intent of this loop is to keep reducing the step size by half, while adjusting the
+				// index either up or down depending on the comparison. It should narrow down the
+				// numbers in a sorted list, and return the index if it finds a value that matches
+				// the input
 				while (step > 0) {
-					System.out.println("Still have numbers to go through...");
 					if (target > nums.get(index)) {
-						System.out.println("Target above me");
-						System.out.println("Step up " + step);
-						index += step;
-						System.out.println("See index " + index + " in " + nums.toString());
+						
+						index += step;						
 						step /= 2;
-						//System.out.println(index + " vs " + index/2);
+						
 					} else if (target < nums.get(index)) {
-						System.out.println("Target below me");
-						System.out.println("Step down " + step);
+						
 						index -= step;
-						System.out.println("See index " + index + " in " + nums.toString());
 						step /= 2;
-						System.out.println(step);
-						//System.out.println(index + " vs " + index/2);
+						
 					} else {
-						System.out.println("Match found");
+						
 						found = true;
 						return index;
-					}
-					System.out.println(step);
+						
+					}	
 				}
 				if (!found) {
 					index = -1;
 					break;
 				}
-				
 			}
-			System.out.println(index);
 			return index;
-			
-			// This is the simplest case. Recursion should always reduce us to this case
-			// If the list only has one element
-//			if (nums.size() == 1) {
-//				// If the element = input
-//				if (nums.get(0) == Integer.parseInt(t.toString())) {
-//					//System.out.println("Reduced to one element!");
-//					// Return the index
-//					return index;
-//				}
-//				else {
-//					// Return -1 for "not found"
-//					return -1;
-//				}
-//			}
-//			else {
-//				//System.out.println("This array has " + nums.size() + " elements");
-//				// Set the index = length/2
-//				index = nums.size()/2;
-//				// If the element = input
-//				if (nums.get(index) == Integer.parseInt(t.toString())) {
-//					//System.out.println("This array has " + nums.size() + " elements");
-//					//System.out.println("Found something in the middle");
-//					// Return the index
-//					return index;
-//				}
-//				// Else if the element > input
-//				else if (nums.get(index) > Integer.parseInt(t.toString())) {
-//					// Save old index, set index /= 2
-//					// Run indexOf on an array from 0 to old index
-//					System.out.println("Target below us. Splitting to the first half");
-//					System.out.println("Finding " + t + " in " + nums.subList(0,  index).toString());
-//					System.out.println(index);
-//					index -= nums.subList(0, index).indexOf(t) + 3;
-//					System.out.println(index);
-//					return index;
-//				}
-//					
-//				// Else
-//				else {
-//					// Save old index, set index /= 2
-//					// Run indexOf on an array from old index to the end of the array
-//					index += nums.subList(index, nums.size()).indexOf(t);
-//					return index;
-//				}
-//					
-//			}
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -508,13 +449,14 @@ public class EvaluationService {
 						break;
 					}
 				}
+				// Select all leading consonants before the first value (including zero characters)
+				// Move any leading consonants to the end of the String, and add "ay"
 				String header = words[i].substring(0, endPoint);
 				words[i] = words[i].substring(endPoint, words[i].length()) + header + tail;
 			}
 			answer = answer + words[i] + " ";
 		}
-			// Select all leading consonants before the first value (including zero characters)
-			// Move any leading consonants to the end of the String, and add "ay"
+			
 		// Return the elements to a new String, separated by spaces
 		answer = answer.substring(0, answer.length()-1);
 		//System.out.println(answer);
@@ -632,9 +574,7 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			// For each alphabetic character in the String:
-			//System.out.println(Character.getNumericValue('A'));
-			//System.out.println(Character.getNumericValue('a'));
+			
 			String lowerTargets = "abcdefghijklmnopqrstuvwxyz";
 			String upperTargets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			String finalAnswer = "";
@@ -644,20 +584,26 @@ public class EvaluationService {
 			int upperStart = Character.valueOf('A');
 			int upperLimit = Character.valueOf('Z') + 1;
 			
+			// For each character in the String:
 			for (int i = 0; i < string.length(); i++) {
 				
 				String active = string.substring(i, i + 1);
 				char activeChar = active.charAt(0);
 				
 				if (lowerTargets.contains(active)) {
+					// If the key goes beyond a letter value:
 					if (Character.valueOf(string.charAt(i)) + key >= lowerLimit) {
 						
+						// Get the distance from the letter to the end of the alphabet
 						int distance = Math.abs(Character.valueOf(string.charAt(i)) - lowerLimit);
+						// Get the difference between this distance and the cipher
 						int difference = Math.abs(distance - key);
+						// Start from "a" and use the difference to reset.
 						activeChar = (char) (lowerStart + difference);
 						
 					}
 					else {
+						// Add the value of the key to the letter.
 						activeChar =  (char) (Character.valueOf(activeChar) + key);
 					}
 					
@@ -678,13 +624,6 @@ public class EvaluationService {
 				finalAnswer = finalAnswer + Character.toString(activeChar);
 				
 			}
-				// Add the value of the key to the letter.
-				// If the key goes beyond a letter value:
-					// Get the distance from the letter to the end of the alphabet
-					// Get the difference between this distance and the cipher
-					// Start from "a" and use the difference to reset.
-			// Return the encrypted String
-			
 			return finalAnswer;
 		}
 
@@ -711,24 +650,21 @@ public class EvaluationService {
 		// The third loop counts up, dividing the current value in the second loop by every number (brut force)
 
 		int lastPrimeFound = 2;
-		// Simple case. Just return 2 as the first prime
+		
 		if (i < 1) {
 			throw new IllegalArgumentException();
 		}
 		else {
-			
+			// The number we are currently looking at
 			int tracer = 3;
 			// The nth prime number we're searching for
 			for (int primeSearch = 2; primeSearch <= i; primeSearch++) {
-				
-				// System.out.println("Searching for prime #" + primeSearch);
 				
 				boolean isPrime = true; // Assume that tracer is a prime number.
 				while (isPrime) {
 					int start = 2; // Always start from 2
 					do {
 						
-						//System.out.println("Dividing " + tracer + " by " + start);
 						isPrime = tracer % start != 0;
 						//System.out.println("isPrime = " + isPrime);
 						if (!isPrime) {
@@ -804,6 +740,7 @@ public class EvaluationService {
 			int listCounter = 0;
 			
 			for (int i = 0; i < toFormat.length(); i += 5) {
+				// This if statement returns the tail end of the string, anywhere from 1 to 4 characters
 				if (toFormat.length() - i < 5) {
 					segments.add(toFormat.substring(i, toFormat.length()));
 					finalAnswer = finalAnswer + segments.get(listCounter);
@@ -817,6 +754,7 @@ public class EvaluationService {
 				}
 				listCounter++;
 			}
+			// Remove the trailing space, if such thing exists
 			if (finalAnswer.charAt(finalAnswer.length() - 1) == ' ') {
 				finalAnswer = finalAnswer.substring(0, finalAnswer.length() - 1);
 			}
@@ -859,7 +797,7 @@ public class EvaluationService {
 					else {
 						// New value -= 2*(value - 13) + 1
 						activeChar = (char) (activeChar - (2*(activeChar - middle)) + 1);
-					}
+					} // The above formulas allow you to invert a letter to its Atbash "opposite"
 				
 				}
 				finalAnswer = finalAnswer + Character.toString(activeChar);
@@ -900,6 +838,7 @@ public class EvaluationService {
 		int[] digits = new int[noDashes.length()];
 		int total = 0;
 		for (int j = 0; j < noDashes.length(); j++) {
+			// If any character is not a number or an X, the ISBN is invalid
 			if (!Character.isDigit(noDashes.charAt(j))) {
 				if (j == noDashes.length()-1) {
 					if (noDashes.charAt(j) == 'X') {
@@ -912,11 +851,10 @@ public class EvaluationService {
 			}
 			else {
 				digits[j] = Integer.parseInt(Character.toString(noDashes.charAt(j)));
+				// Add v1*10 + v2*9 + ... and X on the end will be 10
 				total += digits[j]*(10 - j);
 			}
 		}
-		// If any character is not a number or an X, the ISBN is invalid
-		// Add v1*10 + v2*9 + ... and X on the end will be 10
 		// Modulo result by 11. If it's 0, the ISBN number is valid
 		return total % 11 == 0;
 	}
@@ -1048,21 +986,19 @@ public class EvaluationService {
 			while (!overflow) {
 				
 				int mult = factor * num;
+				// Do not enter any multiples that already exist in the master array
 				if (!multiples.contains(Integer.valueOf(mult))) {
 					if (mult >= i) {
 						overflow = true;
 						break;
 					}
-					multiples.add(mult);
-					
+					multiples.add(mult); // Enter multiples of that number in the master array, stopping before the cutoff.
+					// Sum the master array. Return the result.
 					total += mult;
 				}
 				factor++;
 			}
 		}
-			// Enter multiples of that number in the master array, stopping before the cutoff.
-			// Do not enter any multiples that already exist in the master array
-		// Sum the master array. Return the result.
 		return total;
 	}
 
@@ -1201,19 +1137,15 @@ public class EvaluationService {
 		
 		case "plus":
 			answer = num1 + num2;
-			// System.out.println(num1 + " + " + num2 + " = " + answer);
 			break;
 		case "minus":
 			answer = num1 - num2;
-			// System.out.println(num1 + " - " + num2 + " = " + answer);
 			break;
 		case "multiplied":
 			answer = num1 * num2;
-			// System.out.println(num1 + " * " + num2 + " = " + answer);
 			break;
 		case "divided":
 			answer = num1 / num2;
-			// System.out.println(num1 + " / " + num2 + " = " + answer);
 			break;
 		default:
 			answer = 0;
