@@ -226,7 +226,7 @@ public class EvaluationService {
 			cleanString = cleanString + e;
 		}
 		
-		System.out.println(cleanString);
+		//System.out.println(cleanString);
 		
 		if (cleanString.length() > 10) {
 			throw new IllegalArgumentException();
@@ -421,7 +421,7 @@ public class EvaluationService {
 			// Move any leading consonants to the end of the String, and add "ay"
 		// Return the elements to a new String, separated by spaces
 		answer = answer.substring(0, answer.length()-1);
-		System.out.println(answer);
+		//System.out.println(answer);
 		return answer;
 	}
 
@@ -537,8 +537,8 @@ public class EvaluationService {
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
 			// For each alphabetic character in the String:
-			System.out.println(Character.getNumericValue('A'));
-			System.out.println(Character.getNumericValue('a'));
+			//System.out.println(Character.getNumericValue('A'));
+			//System.out.println(Character.getNumericValue('a'));
 			String lowerTargets = "abcdefghijklmnopqrstuvwxyz";
 			String upperTargets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			String finalAnswer = "";
@@ -936,6 +936,7 @@ public class EvaluationService {
 	 * @param set
 	 * @return
 	 */
+	// COMPLETED
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
 		// Create an array for the multiples
@@ -951,7 +952,7 @@ public class EvaluationService {
 			while (!overflow) {
 				
 				int mult = factor * num;
-				if (!multiples.toString().contains(Integer.toString(mult))) {
+				if (!multiples.contains(Integer.valueOf(mult))) {
 					if (mult >= i) {
 						overflow = true;
 						break;
@@ -1018,14 +1019,14 @@ public class EvaluationService {
 		for (int i = 0; i < string.length(); i++) {
 			// If the current character is not also contained somewhere in the string of valid characters
 			if (!valid.contains(string.substring(i, i+1))) {
-				System.out.println("Letter tripped");
+				//System.out.println("Letter tripped");
 				return false;
 			}
 		}
 		
 		// Destroy all spaces
 		String clean = string.replaceAll(" ", "");
-		System.out.println(clean);
+		//System.out.println(clean);
 		
 		int[] digits = new int[clean.length()];
 		int total = 0;
